@@ -17,10 +17,21 @@ class Search {
     get paramsMapbox() {
         return {
             'access_token': process.env.MAPBOX_KEY,
+            'types': ['place', 'poi'],
             'limit': 6,
             'language': 'en'
         }
     }
+
+    getParamsWeatherMap(latitude, longitude) {
+        return {
+            'lat': latitude,
+            'lon': longitude,
+            'units': 'metric',
+            'appid': process.env.OPENWEATHER_KEY
+        }
+    }
+
 
     async city(location = ''){
         
@@ -35,13 +46,40 @@ class Search {
             
             const response = await instance.get();
             
-            
-            console.log(response.data);
-    
-            return []; //return cities found
+            // Using map arrow function we return a new array of objects, the object is defined as an object literal in within the curly braces.
+            return response.data.features.map( (location) => ({
+                id: location.id,
+                name: location.place_name,
+                longitude: location.center[0],
+                latitude: location.center[1]
+            }));
         } catch (error) {
             console.log(error);
             return [];
+        }
+    }
+
+    
+
+    async weatherByLocation(latitude, longitude) {
+        try {
+            const params = this.getParamsWeatherMap(latitude, longitude);
+
+            const instance = axios.create({
+                baseURL: 'https://api.openweathermap.org/data/2.5/weather',
+                params: params
+            });
+
+            const response = await instance.get();
+
+            return {
+                description: response.data.weather[0].description,
+                currentTemp: response.data.main.temp,
+                minTemp: response.data.main.temp_min,
+                maxTemp: response.data.main.temp_max
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }

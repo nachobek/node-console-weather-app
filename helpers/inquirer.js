@@ -66,7 +66,7 @@ const readInput = async (input) => {
             message: input,
             validate(value) {
                 if (value.length === 0) {
-                    return 'Please enter a task.';
+                    return 'Please enter a value.';
                 }
                 return true;
             }
@@ -79,31 +79,31 @@ const readInput = async (input) => {
 }
 
 
-const listTasksDelete = async ( tasks = [] ) => {
-    const taskChoices = tasks.map((task, i) => {
+const listLocations = async ( locations = [] ) => {
+    const choices = locations.map((location, i) => {
         // Raturn a new array of objects {task.Id and task.Name}
         return {
-            value: task.id,
-            name: `${ colors.green(i+1) + '.'.green } ${task.description}.`
+            value: location.id,
+            name: `${ colors.green(i+1) + '.'.green } ${location.name}.`
         }
     });
 
     // Appending a new option at the start of the array previously defined.
-    taskChoices.unshift({
+    choices.unshift({
         value: 0,
         name: `${'0.'.green} Cancelar.`
     });
 
-    const deleteOptions = [
+    const options = [
         {
             type: 'list',
             name: 'id',
-            message: 'Delete task',
-            choices: taskChoices
+            message: 'Select location:',
+            choices: choices
         }
     ];
 
-    const { id } = await inquirer.prompt(deleteOptions);
+    const { id } = await inquirer.prompt(options);
 
     return id;
 }
@@ -153,7 +153,7 @@ module.exports = {
     inquirerMenu,
     inquirerPause,
     readInput,
-    listTasksDelete,
+    listLocations,
     confirm,
     listTasksCheck
 }
