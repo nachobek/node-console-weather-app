@@ -23,8 +23,6 @@ const menuOptions = [
     }
 ];
 
-
-
 const continueOption = [
     {
         type: 'input',
@@ -32,8 +30,6 @@ const continueOption = [
         message: `Press ${'ENTER'.green} to continue.`
     }
 ];
-
-
 
 const inquirerMenu = async () => {
     
@@ -48,15 +44,11 @@ const inquirerMenu = async () => {
     return option
 }
 
-
-
 const inquirerPause = async () => {
 
     console.log('\n');
     return await inquirer.prompt(continueOption);
 }
-
-
 
 const readInput = async (input) => {
     const inputQuestion = [
@@ -77,7 +69,6 @@ const readInput = async (input) => {
 
     return taskDescription;
 }
-
 
 const listLocations = async ( locations = [] ) => {
     const choices = locations.map((location, i) => {
@@ -108,52 +99,9 @@ const listLocations = async ( locations = [] ) => {
     return id;
 }
 
-
-const confirm = async (message) => {
-    const conrifmOption = [
-        {
-            type: 'confirm',
-            name: 'ok',
-            message // same as --> message: message
-        }
-    ];
-
-    const { ok } = await inquirer.prompt(conrifmOption);
-
-    return ok;
-}
-
-
-const listTasksCheck = async ( tasks = [] ) => {
-    const taskChoices = tasks.map((task, i) => {
-        // Raturn a new array of objects {task.Id and task.Name}
-        return {
-            value: task.id,
-            name: `${ colors.green(i+1) + '.'.green } ${task.description}.`,
-            checked: (task.completedOn) ? true : false // Using ternary operator, if completedOn is NOT null, then checked is true else, false.
-        }
-    });
-
-    
-    const checkOption = [
-        {
-            type: 'checkbox',
-            name: 'id',
-            message: 'Check task',
-            choices: taskChoices
-        }
-    ];
-
-    const { id } = await inquirer.prompt(checkOption);
-
-    return id;
-}
-
 module.exports = {
     inquirerMenu,
     inquirerPause,
     readInput,
-    listLocations,
-    confirm,
-    listTasksCheck
+    listLocations
 }

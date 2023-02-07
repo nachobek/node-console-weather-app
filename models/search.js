@@ -1,3 +1,6 @@
+// Node packages
+const fs = require('fs')
+
 // Third party packages.
 const axios = require('axios');
 
@@ -7,10 +10,11 @@ const axios = require('axios');
 //Class definition.
 class Search {
 
-    history = ['Madrid', 'Stevensville'];
+    history = [];
+    dbPath = './db/database.json';
 
     constructor() {
-        // TODO: read from DB if exists.
+        this.readDb();
     }
 
     // Creating a property so the API parameters can be easily reused.
@@ -31,7 +35,6 @@ class Search {
             'appid': process.env.OPENWEATHER_KEY
         }
     }
-
 
     async city(location = ''){
         
@@ -59,8 +62,6 @@ class Search {
         }
     }
 
-    
-
     async weatherByLocation(latitude, longitude) {
         try {
             const params = this.getParamsWeatherMap(latitude, longitude);
@@ -81,6 +82,42 @@ class Search {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    addHistory (location) {
+        if (this.history.includes(location)) {
+            return;
+        }
+
+        this.history = this.history.splice(0,5);
+
+        this.history.unshift(location);
+
+        this.storeDB();
+    }
+
+    storeDB() {
+        // If there were multiple properties to be stored, it'd be better to define them all in a single variable.
+        // It doesn't make much sense in this case, but to follow best practices we'll do it that way.
+        const payload = {
+            history: this.history
+            //additional properties here.
+        }
+
+        fs.writeFileSync(this.dbPath, JSON.stringify(payload))
+
+    }
+
+    readDb() {
+
+        if (!fs.existsSync(this.dbPath)) {
+            return;
+        }
+
+        const data = fs.readFileSync(this.dbPath, { encoding: 'utf-8' })
+
+        //By default it returns an object, with an array called history. So we extract the array out of the object.
+        this.history = JSON.parse(data).history;
     }
 }
 
