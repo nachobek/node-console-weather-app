@@ -1,5 +1,5 @@
 // Node packages
-const fs = require('fs')
+const fs = require('fs');
 
 // Third party packages.
 const axios = require('axios');
@@ -36,8 +36,7 @@ class Search {
         }
     }
 
-    async city(location = ''){
-        
+    async city(location = ''){        
         try {
             //http request
             // const response = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/stevensv.json?proximity=ip&types=place%2Cpostcode%2Caddress&language=en&access_token=pk.eyJ1IjoibmFjaGJlY2VycmEiLCJhIjoiY2xkdDFkYXZ0MDI3ODN2bDhjdDFpNjV4dyJ9.d2YOzhv2ExlqLoG4YyXkgA');
@@ -104,17 +103,16 @@ class Search {
             //additional properties here.
         }
 
-        fs.writeFileSync(this.dbPath, JSON.stringify(payload))
+        fs.writeFileSync(this.dbPath, JSON.stringify(payload));
 
     }
 
     readDb() {
-
         if (!fs.existsSync(this.dbPath)) {
             return;
         }
 
-        const data = fs.readFileSync(this.dbPath, { encoding: 'utf-8' })
+        const data = fs.readFileSync(this.dbPath, { encoding: 'utf-8' });
 
         //By default it returns an object, with an array called history. So we extract the array out of the object.
         this.history = JSON.parse(data).history;

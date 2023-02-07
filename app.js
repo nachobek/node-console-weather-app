@@ -16,6 +16,7 @@ const main = async () => {
 
     do {
         option = await inquirerMenu();
+
         switch (option) {
             case 1:
                 console.clear();
@@ -70,6 +71,7 @@ const main = async () => {
                 search.history.forEach((location, i) => {
                     console.log(`${(i+1 + '.').green} ${location.name.white}`);
                 });
+
                 break;
         
             default:

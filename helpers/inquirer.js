@@ -41,7 +41,7 @@ const inquirerMenu = async () => {
     // option here is the name given in the menuOptions array. So we are destructuring the object being returned and grabbing option only.
     const { option } = await inquirer.prompt(menuOptions);
 
-    return option
+    return option;
 }
 
 const inquirerPause = async () => {
